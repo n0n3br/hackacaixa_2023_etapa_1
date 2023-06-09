@@ -1,0 +1,21 @@
+ion-row {
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+  justify-content: space-between;
+  :first-child {
+    font-weight: bold;
+  }
+  :nth-child(2) {
+    text-align: right;
+  }
+}
+ion-item {
+  --background: rgba(255, 255, 255, 0.8);
+}
+#container {
+  justify-content: flex-start;
+}
+.installments-list {
+  max-height: calc(100vh - 480px);
+  overflow-y: auto;
+}

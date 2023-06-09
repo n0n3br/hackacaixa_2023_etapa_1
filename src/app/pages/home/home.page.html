@@ -1,0 +1,37 @@
+<app-header></app-header>
+<ion-content>
+  <div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> {{greeting}} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Que bom ter você aqui.</p>
+        <p>Bem vindo ao simulador de empréstimos.</p>
+        <p>Qual o seu nome ?</p>
+        <ion-item class="transparent">
+          <ion-input
+            id="name-input"
+            type="text"
+            required
+            [ngModel]="name$ | async"
+            (ionInput)="onNameInput($event)"
+            shape="round"
+            expand="block"
+            [autofocus]="true"
+          ></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button
+    [disabled]="!(canContinue$ | async)"
+    (click)="onClick()"
+    expand="full"
+  >
+    Continuar
+    <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,95 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Cores da Caixa */
+@import "./assets/css/colors.scss";
+
+/* Card custom style */
+ion-card {
+  --background: rgba(255, 255, 255, 0.7) !important;
+  max-width: 768px;
+}
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.4rem;
+  color: $azul_cx-darker-1;
+}
+ion-item {
+  --color: $azul_cx-darker-1;
+}
+ion-card-title {
+  font-weight: bold;
+  color: $azul_cx-darker-1;
+}
+
+@media (min-width: 769px) {
+  #background {
+    background-position: top right;
+  }
+  #container {
+    align-items: flex-start;
+  }
+  ion-card {
+    min-width: 768px;
+  }
+}
+
+/* transparent input */
+ion-item.transparent {
+  --background: rgba(255, 255, 255, 0.2) !important;
+}
+
+ion-content {
+  --background: none;
+  --padding-top: var(--ion-safe-area-top, 0);
+  background-repeat: no-repeat;
+  background-image: linear-gradient(180deg, $azul_cx-darker-1 20%, transparent),
+    url("/../assets/img/value-input-background.jpg");
+  background-size: cover;
+  background-position: bottom right;
+  > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}
+ion-footer {
+  ion-button {
+    --background: #004075;
+    --color: white;
+  }
+}
+ion-item-divider {
+  ion-label {
+    padding: 0.5rem;
+    --background: #004075;
+    --color: white;
+    width: 100%;
+  }
+}

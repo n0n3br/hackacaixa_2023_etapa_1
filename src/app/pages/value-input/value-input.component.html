@@ -1,0 +1,46 @@
+<app-header></app-header>
+<ion-content>
+  <div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title *ngIf="name$ | async as name"
+          >Ok {{ name }}</ion-card-title
+        >
+      </ion-card-header>
+      <form [formGroup]="form">
+        <ion-card-content>
+          <p>
+            Nos informe agora o valor do empréstimo e quantidade de prestações
+            pretendidas.
+          </p>
+          <ion-item class="transparent">
+            <ion-input
+              label="Valor"
+              type="number"
+              step="0.01"
+              min="0"
+              lang="pt"
+              formControlName="value"
+            ></ion-input>
+          </ion-item>
+          <ion-item class="transparent">
+            <ion-input
+              type="number"
+              step="1"
+              min="0"
+              lang="pt"
+              label="Qtd Prestações"
+              formControlName="installments"
+            ></ion-input>
+          </ion-item>
+        </ion-card-content>
+      </form>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button [disabled]="form.invalid" (click)="onClick()" expand="full">
+    Continuar
+    <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+  </ion-button>
+</ion-footer>

@@ -1,0 +1,24 @@
+<ion-content *ngIf="error$ | async as error">
+  <div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> Opa,algo deu errado </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="ion-text-center">{{ error }}</p>
+        <p class="ion-text-center">
+          <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>
+        </p>
+        <p class="ion-text-center">
+          Você pode voltar e tentar simular com novos valores.
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" (click)="redirect()">
+    Voltar
+    <ion-icon name="chevron-back-outline" slot="start"></ion-icon
+  ></ion-button>
+</ion-footer>
