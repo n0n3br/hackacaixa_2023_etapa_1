@@ -29,14 +29,14 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   ],
 })
 export class ValueInputComponent implements OnInit {
-  appService = inject(AppService);
-  toastService = inject(IonicToastService);
-  formBuilder = inject(FormBuilder);
-  destroyRef = inject(DestroyRef);
-  router = inject(Router);
+  private readonly appService = inject(AppService);
+  private readonly toastService = inject(IonicToastService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
 
-  name$ = this.appService.name$;
-  form = this.formBuilder.group({
+  readonly name$ = this.appService.name$;
+  readonly form = this.formBuilder.group({
     value: new FormControl<number>(0, [
       Validators.required,
       Validators.min(0.01),

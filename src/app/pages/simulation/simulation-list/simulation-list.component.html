@@ -5,59 +5,48 @@
         <ion-card-title> Tudo pronto {{ vm.name }} </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>Temos aqui os detalhes do seu empréstimo</p>
-        <ion-item-group *ngIf="vm.result as result">
+        <p>
+          Temos aqui os detalhes do seu empréstimo de
+          <span class="bold">{{ vm.result?.valor | currency }}</span> a ser pago
+          em
+          <span class="bold">{{
+            vm.result?.qtdParcelas | number : "1.0-0"
+          }}</span>
+          parcelas com amortização do tipo
+          <span class="bold">{{ vm.type }}</span> para o produto
+          <span class="bold">{{ vm.result?.descricaoProduto }}</span>
+        </p>
+        <ion-item-group>
           <ion-item-divider>
-            <ion-label class="ion-text-uppercase">Seu empréstimo</ion-label>
-          </ion-item-divider>
-          <ion-item>
             <ion-label>
               <ion-row>
-                <ion-col>Valor</ion-col>
-                <ion-col>{{ result.valor | currency }}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Qtd Prest.</ion-col>
-                <ion-col>{{ result.qtdParcelas | number : "1.0-0" }}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Produto</ion-col>
-                <ion-col class="ion-text-uppercase">{{
-                  result.descricaoProduto
-                }}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Tipo Amort.</ion-col>
-                <ion-col class="ion-text-uppercase">{{ vm.type }}</ion-col>
+                <ion-col class="ion-text-center" size="4"> Parcela nº </ion-col>
+                <ion-col class="ion-text-right" size="7">Valor</ion-col>
+                <ion-col size="1"></ion-col>
               </ion-row>
             </ion-label>
-          </ion-item>
-        </ion-item-group>
-        <ion-item-group class="installments-list">
-          <ion-item-divider>
-            <ion-label> PRESTAÇÕES </ion-label>
           </ion-item-divider>
-          <ion-item *ngFor="let installment of vm.installments">
-            <ion-label>
-              <ion-row>
-                <ion-col>Prest. n.º </ion-col>
-                <ion-col>{{ installment.numero | number : "1.0-0" }}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Vr. Amort.</ion-col>
-                <ion-col>{{ installment.valorAmortizacao | currency }}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Vr. Juros</ion-col>
-                <ion-col>{{ installment.valorJuros | currency }}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>Vr. Total</ion-col>
-                <ion-col>{{ installment.valorPrestacao | currency }}</ion-col>
-              </ion-row>
-            </ion-label>
-          </ion-item>
+          <div class="scroller">
+            <ion-item
+              *ngFor="let installment of vm.installments"
+              button
+              detail
+              (click)="showDetail(installment)"
+            >
+              <ion-label>
+                <ion-row>
+                  <ion-col class="ion-text-center" size="4">{{
+                    installment.numero | number : "1.0-0"
+                  }}</ion-col>
+                  <ion-col class="ion-text-right" size="8">{{
+                    installment.valorPrestacao | currency
+                  }}</ion-col>
+                </ion-row>
+              </ion-label>
+            </ion-item>
+          </div>
         </ion-item-group>
+        <p>Clique na parcela para ver mais detalhes do valor.</p>
         <p>
           Consulte
           <a

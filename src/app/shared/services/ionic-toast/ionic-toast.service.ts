@@ -5,7 +5,7 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root',
 })
 export class IonicToastService {
-  toastController = inject(ToastController);
+  private readonly toastController = inject(ToastController);
   constructor() {}
 
   showToast(message: string, duration: number = 2000) {

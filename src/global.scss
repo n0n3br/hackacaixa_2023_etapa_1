@@ -86,10 +86,13 @@ ion-footer {
   }
 }
 ion-item-divider {
+  background: $azul_cx-darker-1;
+  color: white;
   ion-label {
     padding: 0.5rem;
-    --background: #004075;
-    --color: white;
     width: 100%;
   }
+}
+ion-alert {
+  --width: 98% !important;
 }

@@ -21,26 +21,7 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   ],
 })
 export class SimulationComponent implements OnInit {
-  appService = inject(AppService);
-  name$ = this.appService.name$;
-  loading$ = this.appService.loading$;
-  results$ = this.appService.results$;
-  currentResult$ = this.appService.currentResult$;
-  loading?: any;
-
-  vm$ = combineLatest([
-    this.name$,
-    this.loading$,
-    this.results$,
-    this.currentResult$,
-  ]).pipe(
-    map(([name, loading, results, currentResult]) => ({
-      name,
-      loading,
-      results,
-      currentResult,
-    }))
-  );
+  private readonly appService = inject(AppService);
 
   constructor() {}
 

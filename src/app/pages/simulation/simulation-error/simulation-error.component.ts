@@ -12,10 +12,10 @@ import { AppService } from 'src/app/app.service';
   imports: [IonicModule, CommonModule],
 })
 export class SimulationErrorComponent implements OnInit {
-  appService = inject(AppService);
-  router = inject(Router);
-  error$ = this.appService.simulationError$;
-  name$ = this.appService.name$;
+  private readonly appService = inject(AppService);
+  private readonly router = inject(Router);
+  readonly error$ = this.appService.simulationError$;
+  readonly name$ = this.appService.name$;
   constructor() {}
 
   ngOnInit() {}

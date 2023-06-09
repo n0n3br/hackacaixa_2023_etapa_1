@@ -15,12 +15,12 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   imports: [IonicModule, CommonModule, FormsModule, HeaderComponent],
 })
 export class HomePage implements OnInit {
-  appService = inject(AppService);
-  router = inject(Router);
+  private readonly appService = inject(AppService);
+  private readonly router = inject(Router);
 
-  name$ = this.appService.name$;
+  readonly name$ = this.appService.name$;
 
-  canContinue$ = this.name$.pipe(map((name) => name.length > 3));
+  readonly canContinue$ = this.name$.pipe(map((name) => name.length > 2));
 
   greeting = '';
 

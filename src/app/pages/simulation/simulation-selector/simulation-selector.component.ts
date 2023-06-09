@@ -16,32 +16,30 @@ import { Total } from 'src/app/shared/model/Total';
   imports: [IonicModule, CommonModule, SimulationLoadingComponent],
 })
 export class SimulationSelectorComponent implements OnInit {
-  appService = inject(AppService);
-  router = inject(Router);
-  location = inject(Location);
-  name$ = this.appService.name$;
-  currentResult$ = this.appService.currentResult$;
-  loading$ = this.appService.loading$;
+  private readonly appService = inject(AppService);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  readonly name$ = this.appService.name$;
+  readonly currentResult$ = this.appService.currentResult$;
+  readonly loading$ = this.appService.loading$;
 
-  vm$ = combineLatest([this.name$, this.currentResult$, this.loading$]).pipe(
+  readonly vm$ = combineLatest([
+    this.name$,
+    this.currentResult$,
+    this.loading$,
+  ]).pipe(
     map(([name, result, loading]) => ({
       name,
       result,
       loading,
-      total: result?.resultadoSimulacao.map((result) => ({
-        tipo: result.tipo,
-        valorTotal: result.parcelas.reduce(
-          (memo, installment) => memo + installment.valorPrestacao,
-          0
-        ),
-        valorAmortizacao: result.parcelas.reduce(
-          (memo, installment) => memo + installment.valorAmortizacao,
-          0
-        ),
-        valorJuros: result.parcelas.reduce(
-          (memo, installment) => memo + installment.valorJuros,
-          0
-        ),
+      types: result?.resultadoSimulacao.map((result) => ({
+        title: result.tipo.toUpperCase(),
+        subtitle: result.parcelas.every(
+          (installment) =>
+            installment.valorPrestacao === result.parcelas[0].valorPrestacao
+        )
+          ? 'Parcelas com mesmo valor'
+          : 'Parcelas com valor decrescente',
       })),
     }))
   );
@@ -50,8 +48,8 @@ export class SimulationSelectorComponent implements OnInit {
 
   ngOnInit() {}
 
-  redirect(result: Total) {
-    this.appService.setSelectedType(result.tipo);
+  redirect(type: string) {
+    this.appService.setSelectedType(type);
     this.router.navigate(['/', 'simulation', 'list']);
   }
   goBack() {

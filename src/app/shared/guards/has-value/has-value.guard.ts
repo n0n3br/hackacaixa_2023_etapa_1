@@ -13,11 +13,14 @@ import { AppService } from 'src/app/app.service';
   providedIn: 'root',
 })
 export class HasValueGuard implements CanActivate {
-  appService = inject(AppService);
-  router = inject(Router);
-  value$ = this.appService.value$;
-  installments$ = this.appService.installments$;
-  simulationValues$ = combineLatest([this.value$, this.installments$]);
+  private readonly appService = inject(AppService);
+  private readonly router = inject(Router);
+  private readonly value$ = this.appService.value$;
+  private readonly installments$ = this.appService.installments$;
+  private readonly simulationValues$ = combineLatest([
+    this.value$,
+    this.installments$,
+  ]);
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

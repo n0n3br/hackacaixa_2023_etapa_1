@@ -1,7 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, combineLatest, debounceTime, map, of } from 'rxjs';
-import { ResultadoSimulacao } from './shared/model/ResultadoSimulacao';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  delay,
+  map,
+  of,
+} from 'rxjs';
 import { IonicToastService } from './shared/services/ionic-toast/ionic-toast.service';
 import { Router } from '@angular/router';
 import { Simulacao } from './shared/model/Simulacao';
@@ -11,7 +17,6 @@ import { Simulacao } from './shared/model/Simulacao';
 })
 export class AppService {
   private readonly http = inject(HttpClient);
-  private readonly ionicToastService = inject(IonicToastService);
   private readonly router = inject(Router);
 
   private readonly _name$ = new BehaviorSubject('');
@@ -95,7 +100,8 @@ export class AppService {
           ...result,
           valor: this.value,
           qtdParcelas: this.installments,
-        }))
+        })),
+        delay(500)
       )
       .subscribe({
         next: (result) => {

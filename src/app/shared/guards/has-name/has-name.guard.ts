@@ -13,9 +13,9 @@ import { AppService } from '../../../app.service';
   providedIn: 'root',
 })
 export class HasNameGuard implements CanActivate {
-  appService = inject(AppService);
-  router = inject(Router);
-  name$ = this.appService.name$;
+  private readonly appService = inject(AppService);
+  private readonly router = inject(Router);
+  private readonly name$ = this.appService.name$;
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

@@ -15,8 +15,8 @@ import { IonicModule, LoadingController } from '@ionic/angular';
   imports: [IonicModule],
 })
 export class SimulationLoadingComponent implements OnInit, OnChanges {
-  loadinController = inject(LoadingController);
-  loadingElement?: HTMLIonLoadingElement;
+  private readonly loadinController = inject(LoadingController);
+  private loadingElement?: HTMLIonLoadingElement;
 
   @Input() loading = false;
   constructor() {}
