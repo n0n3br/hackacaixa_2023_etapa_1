@@ -9,12 +9,12 @@ import {
 import { IonicModule, LoadingController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-simulation-loading',
+  selector: 'app-loading',
   standalone: true,
   template: '',
   imports: [IonicModule],
 })
-export class SimulationLoadingComponent implements OnInit, OnChanges {
+export class LoadingComponent implements OnInit, OnChanges {
   private readonly loadinController = inject(LoadingController);
   private loadingElement?: HTMLIonLoadingElement;
 

@@ -4,7 +4,8 @@ import {
   DecimalPipe,
   Location,
 } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { combineLatest, map } from 'rxjs';
 import { AppService } from 'src/app/app.service';
@@ -22,8 +23,7 @@ import { IonicAlertService } from 'src/app/shared/services/ionic-alert/ionic-ale
 export class SimulationListComponent implements OnInit {
   private readonly appService = inject(AppService);
   private readonly ionicAlertService = inject(IonicAlertService);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly location = inject(Location);
+  private readonly router = inject(Router);
   readonly currentResult$ = this.appService.currentResult$;
   readonly name$ = this.appService.name$;
   readonly installments$ = this.appService.selectedInstallments$;
@@ -48,14 +48,16 @@ export class SimulationListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-  goBack() {
-    this.location.back();
+
+  goToContactForm(event: MouseEvent) {
+    event.preventDefault();
+    this.router.navigate(['/', 'contact-form']);
   }
 
   showDetail(installment: Parcela) {
     this.ionicAlertService.showAlert(
       `Parcela n.º ${this.decimalPipe.transform(installment.numero, '1.0-0')}`,
-      `<table style='border 1px solid #004075; width: 100%'>
+      `<table style='width: 100%'>
         <thead>
           <tr>
             <th style='background: #004075; color: white; padding: .5rem'>Composição</th>

@@ -1,12 +1,21 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button
+        *ngIf="showBackButton"
+        class="ion-padding-end"
+        (click)="goBack()"
+        ><ion-icon name="arrow-back-outline" slot="start"></ion-icon
+        ><span>Voltar</span>
+      </ion-button>
+    </ion-buttons>
+
     <ion-buttons slot="start">
       <img
-        src="../assets/img/logo-small.png"
+        src="../assets/img/logo-caixa.svg"
         alt="logo pequeno"
-        id="logo-toolbar"
+        class="ion-padding-start"
       />
     </ion-buttons>
-    <ion-title> </ion-title>
   </ion-toolbar>
 </ion-header>

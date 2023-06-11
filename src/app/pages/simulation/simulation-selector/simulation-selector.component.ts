@@ -1,22 +1,21 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, CurrencyPipe, Location } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { AppService } from 'src/app/app.service';
-import { SimulationLoadingComponent } from '../simulation-loading/simulation-loading.component';
 import { combineLatest, map } from 'rxjs';
-import { ResultadoSimulacao } from 'src/app/shared/model/ResultadoSimulacao';
 import { Router } from '@angular/router';
-import { Total } from 'src/app/shared/model/Total';
 
 @Component({
   selector: 'app-simulation-selector',
   standalone: true,
   templateUrl: './simulation-selector.component.html',
   styleUrls: ['./simulation-selector.component.scss'],
-  imports: [IonicModule, CommonModule, SimulationLoadingComponent],
+  imports: [IonicModule, CommonModule],
+  providers: [CurrencyPipe],
 })
 export class SimulationSelectorComponent implements OnInit {
   private readonly appService = inject(AppService);
+  private readonly currencyPipe = inject(CurrencyPipe);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   readonly name$ = this.appService.name$;
@@ -38,8 +37,12 @@ export class SimulationSelectorComponent implements OnInit {
           (installment) =>
             installment.valorPrestacao === result.parcelas[0].valorPrestacao
         )
-          ? 'Parcelas com mesmo valor'
-          : 'Parcelas com valor decrescente',
+          ? `Parcelas com mesmo valor`
+          : `Parcelas com valor decrescente`,
+        values: [
+          result.parcelas.at(0)?.valorPrestacao ?? 0,
+          result.parcelas.at(-1)?.valorPrestacao ?? 0,
+        ],
       })),
     }))
   );
@@ -51,8 +54,5 @@ export class SimulationSelectorComponent implements OnInit {
   redirect(type: string) {
     this.appService.setSelectedType(type);
     this.router.navigate(['/', 'simulation', 'list']);
-  }
-  goBack() {
-    this.location.back();
   }
 }

@@ -5,12 +5,25 @@ import {
   combineLatest,
   debounceTime,
   delay,
+  firstValueFrom,
   map,
   of,
+  tap,
+  timer,
 } from 'rxjs';
 import { IonicToastService } from './shared/services/ionic-toast/ionic-toast.service';
 import { Router } from '@angular/router';
 import { Simulacao } from './shared/model/Simulacao';
+
+interface ContactFormParams {
+  name: string;
+  cpf: string;
+  phone: string;
+  contactBy: string;
+  contactOn: string;
+  type: string;
+  simulation: Simulacao;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +42,7 @@ export class AppService {
   private readonly _loading$ = new BehaviorSubject(false);
   private readonly _selectedType = new BehaviorSubject('');
   private readonly _simulationError$ = new BehaviorSubject('');
+  private readonly _showBackButton$ = new BehaviorSubject(false);
 
   readonly name$ = this._name$.asObservable().pipe(debounceTime(100));
   readonly value$ = this._value$.asObservable();
@@ -38,6 +52,7 @@ export class AppService {
   readonly loading$ = this._loading$.asObservable();
   readonly selectedType$ = this._selectedType.asObservable();
   readonly simulationError$ = this._simulationError$.asObservable();
+  readonly showBackButton = this._showBackButton$.asObservable();
   readonly selectedInstallments$ = combineLatest([
     this.currentResult$,
     this.selectedType$,
@@ -71,7 +86,9 @@ export class AppService {
   setInstallments(value: number | undefined) {
     this._installments$.next(value ?? 0);
   }
-
+  setShowBackButton(value: boolean) {
+    this._showBackButton$.next(value);
+  }
   setSelectedType(type: string) {
     this._selectedType.next(type);
   }
@@ -115,5 +132,15 @@ export class AppService {
           this.router.navigate(['/', 'simulation', 'error']);
         },
       });
+  }
+
+  postContactForm(params: ContactFormParams) {
+    this._loading$.next(true);
+    debugger;
+    return timer(1000).pipe(
+      tap(() => console.log({ postParams: params })),
+      tap(() => this._loading$.next(false)),
+      map(() => true)
+    );
   }
 }

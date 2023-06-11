@@ -48,27 +48,11 @@
         </ion-item-group>
         <p>Clique na parcela para ver mais detalhes do valor.</p>
         <p>
-          Consulte
-          <a
-            href="https://www.caixa.gov.br/voce/credito-financiamento/Paginas/default.aspx"
-            target="_blank"
-            >aqui</a
-          >
-          a lista de documentos necessários e
-          <a
-            href="https://www.caixa.gov.br/atendimento/Paginas/encontre-a-caixa.aspx"
-            target="_blank"
-            >aqui</a
-          >
-          a agência mais próximo de você
+          Gostou do resultado ? Clique
+          <a href="" (click)="goToContactForm($event)">aqui</a> para que uma de
+          nossas agências entre em contato.
         </p></ion-card-content
       >
     </ion-card>
   </div>
 </ion-content>
-<ion-footer>
-  <ion-button (click)="goBack()" expand="full">
-    Voltar
-    <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
-  </ion-button>
-</ion-footer>

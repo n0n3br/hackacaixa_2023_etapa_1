@@ -1,5 +1,11 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  importProvidersFrom,
+  inject,
+} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { AppService } from '../../app.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -14,7 +20,8 @@ import {
 import { IonicToastService } from '../../shared/services/ionic-toast/ionic-toast.service';
 import { Router } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
-
+import { CurrencyMaskDirective } from 'src/app/shared/directives/currency-mask/currency-mask.directive';
+import { debounceTime, delay } from 'rxjs';
 @Component({
   selector: 'app-value-input',
   standalone: true,
@@ -26,6 +33,7 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
     FormsModule,
     ReactiveFormsModule,
     HeaderComponent,
+    CurrencyMaskDirective,
   ],
 })
 export class ValueInputComponent implements OnInit {
@@ -34,13 +42,10 @@ export class ValueInputComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
-
+  valor = 0;
   readonly name$ = this.appService.name$;
   readonly form = this.formBuilder.group({
-    value: new FormControl<number>(0, [
-      Validators.required,
-      Validators.min(0.01),
-    ]),
+    value: new FormControl<string>('', [Validators.required]),
     installments: new FormControl<number>(0, [
       Validators.required,
       Validators.min(1),
@@ -51,17 +56,25 @@ export class ValueInputComponent implements OnInit {
 
   ngOnInit() {
     this.form.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(500))
       .subscribe((values) => {
-        this.appService.setValue(values.value ?? 0);
-        this.appService.setInstallments(values.installments ?? 0);
+        setTimeout(() => {
+          const values = this.form.getRawValue();
+          this.appService.setValue(
+            values.value
+              ? parseFloat(values.value.replace(/,/g, '').replace(/\./g, '')) /
+                  100
+              : 0
+          );
+          this.appService.setInstallments(values.installments ?? 0);
+        }, 0);
       });
   }
 
   onClick() {
     if (this.form.invalid) {
       this.toastService.showToast(
-        'Valor e qtd. prest. tem que ser maior que 0'
+        'Valor e qtd. parcelas. tem que ser maior que 0'
       );
       return;
     }

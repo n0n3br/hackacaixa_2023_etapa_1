@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Futura";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/futura-medium.ttf");
+}
+
+:root {
+  --ion-font-family: "Futura";
+}

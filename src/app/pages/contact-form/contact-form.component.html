@@ -1,0 +1,76 @@
+<app-header> </app-header>
+<ion-content>
+  <div *ngIf="vm$ | async as vm">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> Falta pouco {{ vm.name }} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          Preencha o formulário a seguir que em breve entraremos em contato:
+        </p>
+        <form [formGroup]="form">
+          <ion-item class="transparent">
+            <ion-input
+              type="text"
+              formControlName="name"
+              label="Nome"
+              class="ion-text-end"
+            ></ion-input>
+          </ion-item>
+          <ion-item class="transparent">
+            <ion-input
+              type="phone"
+              formControlName="cpf"
+              label="CPF"
+              cpfcnpjMask
+              class="ion-text-end"
+            ></ion-input>
+          </ion-item>
+          <ion-item class="transparent">
+            <ion-input
+              type="phone"
+              formControlName="phone"
+              label="Telefone"
+              phoneMask
+              class="ion-text-end"
+            ></ion-input>
+          </ion-item>
+          <ion-item class="transparent">
+            <ion-select
+              formControlName="contactBy"
+              style="width: 100%"
+              cancelText="Cancelar"
+              label="Meio de contato"
+            >
+              <ion-select-option
+                *ngFor="let mean of contactMeans"
+                [value]="mean.value"
+                >{{ mean.label }}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <ion-item class="transparent">
+            <ion-label>Melhor Horário</ion-label>
+            <ion-datetime-button datetime="contactOn"></ion-datetime-button>
+          </ion-item>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime
+                *ngIf="form"
+                id="contactOn"
+                presentation="time"
+                formControlName="contactOn"
+              ></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" [disabled]="form.invalid" (click)="onSend()"
+    >Enviar</ion-button
+  >
+</ion-footer>

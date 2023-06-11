@@ -1,5 +1,4 @@
 <ion-content *ngIf="vm$ | async as vm">
-  <app-simulation-loading [loading]="vm.loading"></app-simulation-loading>
   <div *ngIf="!vm.loading">
     <ion-card>
       <ion-card-header>
@@ -32,19 +31,30 @@
           (click)="redirect(type.title)"
         >
           <ion-label>
-            <ion-row class="title">{{ type.title }} </ion-row>
+            <ion-row class="title"
+              >{{ type.title }} - {{ type.subtitle }}</ion-row
+            >
             <ion-row class="subtitle">
               {{ type.subtitle }}
             </ion-row>
+            <ion-row
+              class="subtitle"
+              *ngIf="type.values.at(0) === type.values.at(-1); else sac"
+            >
+              {{ type.values.at(0) | currency }}
+            </ion-row>
+            <ng-template #sac>
+              <ion-row class="subtitle">
+                Primeira parcela: {{ type.values.at(0) | currency }}
+              </ion-row>
+              <ion-row class="subtitle">
+                Última parcela: {{ type.values.at(-1) | currency }}
+              </ion-row>
+            </ng-template>
           </ion-label>
         </ion-item>
       </ion-card-content>
     </ion-card>
   </div>
 </ion-content>
-<ion-footer>
-  <ion-button (click)="goBack()" expand="full">
-    Alterar Valores
-    <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
-  </ion-button>
-</ion-footer>
+<ion-footer> </ion-footer>

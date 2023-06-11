@@ -15,6 +15,7 @@ export const routes: Routes = [
         (m) => m.ValueInputComponent
       ),
     canActivate: [HasNameGuard],
+    data: { showBackButton: true },
   },
   {
     path: 'simulation',
@@ -22,6 +23,8 @@ export const routes: Routes = [
       import('./pages/simulation/simulation.component').then(
         (m) => m.SimulationComponent
       ),
+    data: { showBackButton: true },
+
     canActivate: [HasValueGuard],
     children: [
       {
@@ -47,6 +50,15 @@ export const routes: Routes = [
       },
       { path: '', pathMatch: 'full', redirectTo: 'selector' },
     ],
+  },
+  {
+    path: 'contact-form',
+    loadComponent: () =>
+      import('./pages/contact-form/contact-form.component').then(
+        (m) => m.ContactFormComponent
+      ),
+    data: { showBackButton: true },
+    canActivate: [HasNameGuard, HasValueGuard],
   },
   {
     path: '',

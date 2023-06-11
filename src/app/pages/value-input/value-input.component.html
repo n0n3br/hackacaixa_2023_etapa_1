@@ -10,16 +10,16 @@
       <form [formGroup]="form">
         <ion-card-content>
           <p>
-            Nos informe agora o valor do empréstimo e quantidade de prestações
+            Nos informe agora o valor do empréstimo e quantidade de parcelas
             pretendidas.
           </p>
           <ion-item class="transparent">
             <ion-input
               label="Valor"
-              type="number"
-              step="0.01"
-              min="0"
-              lang="pt"
+              type="tel"
+              currencyMask
+              decimal=","
+              thousand="."
               formControlName="value"
             ></ion-input>
           </ion-item>
@@ -29,7 +29,7 @@
               step="1"
               min="0"
               lang="pt"
-              label="Qtd Prestações"
+              label="Qtd Parcelas"
               formControlName="installments"
             ></ion-input>
           </ion-item>

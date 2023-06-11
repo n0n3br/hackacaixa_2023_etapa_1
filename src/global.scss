@@ -28,6 +28,9 @@
 /* Cores da Caixa */
 @import "./assets/css/colors.scss";
 
+/* Fonte futura */
+@import "./assets/css//fonts.scss";
+
 /* Card custom style */
 ion-card {
   --background: rgba(255, 255, 255, 0.7) !important;
@@ -69,7 +72,7 @@ ion-content {
   --padding-top: var(--ion-safe-area-top, 0);
   background-repeat: no-repeat;
   background-image: linear-gradient(180deg, $azul_cx-darker-1 20%, transparent),
-    url("/../assets/img/value-input-background.jpg");
+    url("/../assets/img/app-background.jpg");
   background-size: cover;
   background-position: bottom right;
   > div {
@@ -95,4 +98,7 @@ ion-item-divider {
 }
 ion-alert {
   --width: 98% !important;
+}
+.text-white {
+  color: white;
 }
