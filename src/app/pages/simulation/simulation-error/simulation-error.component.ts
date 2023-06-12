@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { AppService } from 'src/app/app.service';
+import { StoreService } from 'src/app/shared/store/store.service';
 
 @Component({
   selector: 'app-simulation-error',
@@ -12,10 +12,10 @@ import { AppService } from 'src/app/app.service';
   imports: [IonicModule, CommonModule],
 })
 export class SimulationErrorComponent implements OnInit {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly router = inject(Router);
-  readonly error$ = this.appService.simulationError$;
-  readonly name$ = this.appService.name$;
+  readonly error$ = this.store.simulationError$;
+  readonly name$ = this.store.name$;
   constructor() {}
 
   ngOnInit() {}

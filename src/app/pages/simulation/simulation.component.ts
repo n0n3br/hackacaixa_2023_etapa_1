@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { combineLatest, map } from 'rxjs';
-import { AppService } from 'src/app/app.service';
+import { StoreService } from 'src/app/shared/store/store.service';
 import { SimulationSelectorComponent } from './simulation-selector/simulation-selector.component';
 import { SimulationListComponent } from './simulation-list/simulation-list.component';
 import { CommonModule } from '@angular/common';
@@ -21,11 +20,11 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   ],
 })
 export class SimulationComponent implements OnInit {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
 
   constructor() {}
 
   ngOnInit() {
-    this.appService.getSimulacao();
+    this.store.getSimulacao();
   }
 }

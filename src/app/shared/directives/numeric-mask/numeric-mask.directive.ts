@@ -1,8 +1,8 @@
-import { Directive } from '@angular/core';
+import { Directive, Attribute } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 @Directive({
-  selector: '[cpfcnpjMask]',
+  selector: '[numericMask]',
   host: {
     '(keyup)': 'onInputChange($event)',
     '(ionChange)': 'onInputChange($event)',
@@ -10,14 +10,18 @@ import { NgModel } from '@angular/forms';
   providers: [NgModel],
   standalone: true,
 })
-export class CpfcnpjMaskDirective {
+export class NumericMaskDirective {
   $event: any;
-
+  mask = '';
   /**
    * Construtor
    * @param {NgModel} model
    */
-  constructor(public model: NgModel) {}
+  constructor(public model: NgModel, @Attribute('numericMask') mask: string) {
+    if (mask) {
+      this.mask = mask;
+    }
+  }
 
   private format(value: string, pattern: string) {
     let i = 0;
@@ -34,26 +38,24 @@ export class CpfcnpjMaskDirective {
    */
   onInputChange(event: any) {
     let value = event.target.value.replace(/\D/g, '');
-    let pattern = value.length <= 14 ? '***.***.***-**' : '**.***.***/****-**';
-    if (value.length > 15) {
-      value = value.slice(0, 11 - value.length);
+    if (value.length > this.mask.length) {
+      value = value.slice(0, this.mask.length - value.length);
     }
-
     if (
       event.keyIdentifier === 'U+0008' ||
       event.keyCode === 8 ||
       event.key === 'Backspace'
     ) {
       if (value.length) {
-        while (pattern[value.length] && pattern[value.length] !== '*') {
-          value = this.format(value.substring(0, value.length - 1), pattern);
+        while (this.mask[value.length] && this.mask[value.length] !== '*') {
+          value = this.format(value.substring(0, value.length - 1), this.mask);
         }
-        if (pattern.substring(0, value.length).indexOf('*') < 0) {
-          value = this.format(value.substring(0, value.length - 1), pattern);
+        if (this.mask.substring(0, value.length).indexOf('*') < 0) {
+          value = this.format(value.substring(0, value.length - 1), this.mask);
         }
       }
     } else {
-      value = this.format(value, pattern);
+      value = this.format(value, this.mask);
     }
     event.target.value = value;
     if (this.model) {

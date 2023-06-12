@@ -8,7 +8,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { combineLatest, map } from 'rxjs';
-import { AppService } from 'src/app/app.service';
+import { StoreService } from 'src/app/shared/store/store.service';
 import { Parcela } from 'src/app/shared/model/Parcela';
 import { IonicAlertService } from 'src/app/shared/services/ionic-alert/ionic-alert.service';
 
@@ -21,13 +21,13 @@ import { IonicAlertService } from 'src/app/shared/services/ionic-alert/ionic-ale
   providers: [DecimalPipe, CurrencyPipe],
 })
 export class SimulationListComponent implements OnInit {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly ionicAlertService = inject(IonicAlertService);
   private readonly router = inject(Router);
-  readonly currentResult$ = this.appService.currentResult$;
-  readonly name$ = this.appService.name$;
-  readonly installments$ = this.appService.selectedInstallments$;
-  readonly type$ = this.appService.selectedType$;
+  readonly currentResult$ = this.store.currentResult$;
+  readonly name$ = this.store.name$;
+  readonly installments$ = this.store.selectedInstallments$;
+  readonly type$ = this.store.selectedType$;
   readonly decimalPipe = inject(DecimalPipe);
   readonly currencyPipe = inject(CurrencyPipe);
 

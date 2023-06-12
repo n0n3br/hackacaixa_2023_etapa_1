@@ -10,15 +10,21 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { combineLatest, filter, firstValueFrom, map } from 'rxjs';
-import { AppService } from 'src/app/app.service';
+import {
+  EMPTY,
+  catchError,
+  combineLatest,
+  filter,
+  firstValueFrom,
+  map,
+  tap,
+} from 'rxjs';
+import { StoreService } from 'src/app/shared/store/store.service';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
-import { CpfcnpjMaskDirective } from 'src/app/shared/directives/cpf-cnpj-mask/cpf-cnpj-mask.directive';
-import { PhoneMaskDirective } from 'src/app/shared/directives/phone-mask/phone-mask.directive';
 import { Simulacao } from 'src/app/shared/model/Simulacao';
 import { IonicAlertService } from 'src/app/shared/services/ionic-alert/ionic-alert.service';
 import { cpfValidator } from 'src/app/shared/validators/cpf/cpf.validator';
-import { ZipcodeValidator } from 'src/app/shared/validators/zipcode/zipcode.validator';
+import { NumericMaskDirective } from 'src/app/shared/directives/numeric-mask/numeric-mask.directive';
 
 @Component({
   selector: 'app-submit-form',
@@ -31,21 +37,19 @@ import { ZipcodeValidator } from 'src/app/shared/validators/zipcode/zipcode.vali
     IonicModule,
     HeaderComponent,
     CommonModule,
-    CpfcnpjMaskDirective,
-    PhoneMaskDirective,
+    NumericMaskDirective,
   ],
 })
 export class ContactFormComponent implements OnInit {
-  appService = inject(AppService);
+  store = inject(StoreService);
   ionicAlertService = inject(IonicAlertService);
   router = inject(Router);
-  zipcodeValidator = inject(ZipcodeValidator);
   formBuilder = inject(FormBuilder);
   location = inject(Location);
 
-  name$ = this.appService.name$;
-  result$ = this.appService.currentResult$;
-  type$ = this.appService.selectedType$;
+  name$ = this.store.name$;
+  result$ = this.store.currentResult$;
+  type$ = this.store.selectedType$;
 
   simulation?: Simulacao;
   type = '';
@@ -102,29 +106,31 @@ export class ContactFormComponent implements OnInit {
     if (this.form.invalid || !this.simulation) {
       return;
     }
-    try {
-      const postValues = {
-        name: this.form.controls.name.value!,
-        cpf: this.form.controls.cpf.value!,
-        phone: this.form.controls.phone.value!,
-        contactBy: this.form.controls.contactBy.value!,
-        contactOn: this.form.controls.contactOn.value!.slice(11, 16),
-        type: this.type,
-        simulation: this.simulation,
-      };
+    const postValues = {
+      name: this.form.controls.name.value!,
+      cpf: this.form.controls.cpf.value!,
+      phone: this.form.controls.phone.value!,
+      contactBy: this.form.controls.contactBy.value!,
+      contactOn: this.form.controls.contactOn.value!.slice(11, 16),
+      type: this.type,
+      simulation: this.simulation,
+    };
 
-      await firstValueFrom(this.appService.postContactForm(postValues));
-      await this.ionicAlertService.showAlert(
-        'Sucesso',
-        'Em breve entraremos em contato com você.'
-      );
-      this.router.navigate(['/']);
-    } catch (error) {
-      console.error(error);
-      await this.ionicAlertService.showAlert(
-        'Erro',
-        'Houve um erro ao enviar os dados. Tente novamente'
-      );
-    }
+    this.store.postContactForm(postValues).subscribe({
+      next: async () => {
+        await this.ionicAlertService.showAlert(
+          'Sucesso',
+          'Em breve entraremos em contato com você.'
+        );
+        this.router.navigate(['/']);
+      },
+      error: async (error) => {
+        console.error(error);
+        await this.ionicAlertService.showAlert(
+          'Erro',
+          'Houve um erro ao enviar os dados. Tente novamente'
+        );
+      },
+    });
   }
 }

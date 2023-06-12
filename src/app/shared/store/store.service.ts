@@ -5,33 +5,21 @@ import {
   combineLatest,
   debounceTime,
   delay,
-  firstValueFrom,
   map,
-  of,
   tap,
-  timer,
 } from 'rxjs';
-import { IonicToastService } from './shared/services/ionic-toast/ionic-toast.service';
 import { Router } from '@angular/router';
-import { Simulacao } from './shared/model/Simulacao';
-
-interface ContactFormParams {
-  name: string;
-  cpf: string;
-  phone: string;
-  contactBy: string;
-  contactOn: string;
-  type: string;
-  simulation: Simulacao;
-}
+import { Simulacao } from '../model/Simulacao';
+import { ApiService } from '../services/api/api.service';
+import { ContactFormParams } from '../model/ContactFormParams';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AppService {
+export class StoreService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-
+  private readonly apiService = inject(ApiService);
   private readonly _name$ = new BehaviorSubject('');
   private readonly _value$ = new BehaviorSubject(0);
   private readonly _installments$ = new BehaviorSubject(0);
@@ -106,12 +94,10 @@ export class AppService {
       this._currentResult$.next(resultExists);
       return;
     }
+
     this._loading$.next(true);
-    this.http
-      .post<Simulacao>(
-        'https://apphackaixades.azurewebsites.net/api/Simulacao',
-        { valorDesejado: this.value, prazo: this.installments }
-      )
+    this.apiService
+      .getSimulacao(this.value, this.installments)
       .pipe(
         map((result) => ({
           ...result,
@@ -136,11 +122,8 @@ export class AppService {
 
   postContactForm(params: ContactFormParams) {
     this._loading$.next(true);
-    debugger;
-    return timer(1000).pipe(
-      tap(() => console.log({ postParams: params })),
-      tap(() => this._loading$.next(false)),
-      map(() => true)
-    );
+    return this.apiService
+      .postContactForm(params)
+      .pipe(tap(() => this._loading$.next(false)));
   }
 }

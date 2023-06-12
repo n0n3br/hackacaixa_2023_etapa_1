@@ -7,7 +7,7 @@ import {
   inject,
 } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { AppService } from '../../app.service';
+import { StoreService } from '../../shared/store/store.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
@@ -37,13 +37,13 @@ import { debounceTime, delay } from 'rxjs';
   ],
 })
 export class ValueInputComponent implements OnInit {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly toastService = inject(IonicToastService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   valor = 0;
-  readonly name$ = this.appService.name$;
+  readonly name$ = this.store.name$;
   readonly form = this.formBuilder.group({
     value: new FormControl<string>('', [Validators.required]),
     installments: new FormControl<number>(0, [
@@ -60,13 +60,13 @@ export class ValueInputComponent implements OnInit {
       .subscribe((values) => {
         setTimeout(() => {
           const values = this.form.getRawValue();
-          this.appService.setValue(
+          this.store.setValue(
             values.value
               ? parseFloat(values.value.replace(/,/g, '').replace(/\./g, '')) /
                   100
               : 0
           );
-          this.appService.setInstallments(values.installments ?? 0);
+          this.store.setInstallments(values.installments ?? 0);
         }, 0);
       });
   }

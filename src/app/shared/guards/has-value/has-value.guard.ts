@@ -7,16 +7,16 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
-import { AppService } from 'src/app/app.service';
+import { StoreService } from 'src/app/shared/store/store.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HasValueGuard implements CanActivate {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly router = inject(Router);
-  private readonly value$ = this.appService.value$;
-  private readonly installments$ = this.appService.installments$;
+  private readonly value$ = this.store.value$;
+  private readonly installments$ = this.store.installments$;
   private readonly simulationValues$ = combineLatest([
     this.value$,
     this.installments$,

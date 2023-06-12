@@ -1,7 +1,7 @@
 import { CommonModule, CurrencyPipe, Location } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { AppService } from 'src/app/app.service';
+import { StoreService } from 'src/app/shared/store/store.service';
 import { combineLatest, map } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -14,13 +14,13 @@ import { Router } from '@angular/router';
   providers: [CurrencyPipe],
 })
 export class SimulationSelectorComponent implements OnInit {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly currencyPipe = inject(CurrencyPipe);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
-  readonly name$ = this.appService.name$;
-  readonly currentResult$ = this.appService.currentResult$;
-  readonly loading$ = this.appService.loading$;
+  readonly name$ = this.store.name$;
+  readonly currentResult$ = this.store.currentResult$;
+  readonly loading$ = this.store.loading$;
 
   readonly vm$ = combineLatest([
     this.name$,
@@ -52,7 +52,7 @@ export class SimulationSelectorComponent implements OnInit {
   ngOnInit() {}
 
   redirect(type: string) {
-    this.appService.setSelectedType(type);
+    this.store.setSelectedType(type);
     this.router.navigate(['/', 'simulation', 'list']);
   }
 }

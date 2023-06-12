@@ -7,15 +7,15 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { AppService } from '../../../app.service';
+import { StoreService } from '../../store/store.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HasNameGuard implements CanActivate {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly router = inject(Router);
-  private readonly name$ = this.appService.name$;
+  private readonly name$ = this.store.name$;
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

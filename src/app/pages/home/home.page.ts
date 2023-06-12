@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, NavController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { AppService } from '../../app.service';
+import { StoreService } from '../../shared/store/store.service';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
@@ -15,10 +15,10 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
   imports: [IonicModule, CommonModule, FormsModule, HeaderComponent],
 })
 export class HomePage implements OnInit {
-  private readonly appService = inject(AppService);
+  private readonly store = inject(StoreService);
   private readonly router = inject(Router);
 
-  readonly name$ = this.appService.name$;
+  readonly name$ = this.store.name$;
 
   readonly canContinue$ = this.name$.pipe(map((name) => name.length > 2));
 
@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
   }
 
   onNameInput(event: any) {
-    this.appService.setName(event.target!.value);
+    this.store.setName(event.target!.value);
   }
 
   onClick() {
